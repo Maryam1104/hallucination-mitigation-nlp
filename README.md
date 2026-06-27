@@ -2,19 +2,19 @@
 
 ## Abstract
 
-Abstractive summarization of long scientific documents — such as ArXiv
-preprints and PubMed biomedical articles — remains a challenging open problem
+Abstractive summarization of long scientific documents, such as ArXiv
+preprints and PubMed biomedical articles remains a challenging open problem
 in Natural Language Processing. State-of-the-art sequence-to-sequence models
 frequently produce summaries that are fluent yet factually inconsistent with
 their source documents, a phenomenon known as *hallucination*. This repository
 implements a complete, reproducible research pipeline that directly attacks
 this problem through a two-stage hybrid framework:
 
-1. **Extractive grounding** — a Longformer-based encoder augmented with a
+1. **Extractive grounding**: a Longformer-based encoder augmented with a
    learnable cross-attention head (and a DistilBERT sentence-level classifier
    as a comparative baseline) selects the most salient sentences from a
    document, producing a factually grounded extractive summary.
-2. **Controlled abstractive refinement** — a four-stage GPT self-critique loop
+2. **Controlled abstractive refinement**: a four-stage GPT self-critique loop
    (fact extraction → guided rewrite → self-critique → automated revision)
    rewrites each extractive chunk into fluent academic prose while being
    explicitly anchored to extracted (subject, predicate, object) fact triples,
@@ -267,7 +267,7 @@ After a full pipeline run the following outputs are written under `<base_dir>`:
 
 ## Citation
 
-This work is under review at the moment
+This work is under review at the moment. 
 ---
 
 ## License
