@@ -2,7 +2,7 @@
 main.py
 =======
 Single entry point for the hallucination-mitigation long-document
-summarisation pipeline.
+summarization pipeline.
 
 Usage
 -----
@@ -82,7 +82,7 @@ def parse_args() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         description=(
-            "Hallucination-mitigation long-document summarisation pipeline. "
+            "Hallucination-mitigation long-document summarization pipeline. "
             "Trains Longformer + DistilBERT extractive models and a T5 "
             "abstractive model, then rewrites extractive summaries using a "
             "GPT-powered self-critique loop."

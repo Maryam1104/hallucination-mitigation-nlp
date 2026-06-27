@@ -1,10 +1,10 @@
 """
 src/data_processing.py
 =======================
-All dataset-related logic for the hallucination-mitigation summarisation
+All dataset-related logic for the hallucination-mitigation summarization
 pipeline:
 
-* Downloading the ArXiv and PubMed long-document extractive summarisation
+* Downloading the ArXiv and PubMed long-document extractive summarization
   datasets from Hugging Face.
 * TF-IDF-based extractive oracle summary generation.
 * Enriched dataset serialisation (JSONL) with oracle annotations.
@@ -55,7 +55,7 @@ DATASET_FEATURES: Features = Features(
 
 def download_datasets(dataset_path: str) -> None:
     """
-    Download the ArXiv and PubMed long-document summarisation splits from the
+    Download the ArXiv and PubMed long-document summarization splits from the
     Hugging Face Hub via direct HTTPS URLs.
 
     Each dataset has three splits (``train``, ``val``, ``test``), each saved

@@ -1,8 +1,8 @@
-# Hallucination Mitigation in Long-Document Summarisation
+# Hallucination Mitigation in Long-Document summarization
 
 ## Abstract
 
-Abstractive summarisation of long scientific documents — such as ArXiv
+Abstractive summarization of long scientific documents — such as ArXiv
 preprints and PubMed biomedical articles — remains a challenging open problem
 in Natural Language Processing. State-of-the-art sequence-to-sequence models
 frequently produce summaries that are fluent yet factually inconsistent with
