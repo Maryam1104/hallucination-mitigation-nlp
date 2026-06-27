@@ -48,84 +48,84 @@ hallucination_mitigation_nlp/
 - **`src/utils.py`**
   - Central configuration constants (`TRAIN_SIZE`, `VAL_SIZE`, `TEST_SIZE`,
     `GPT_MODEL`, `CHUNK_TOKEN_SIZE`, etc.).
-  - `build_paths(base_dir)` — constructs and creates all project directories
+  - `build_paths(base_dir)`: constructs and creates all project directories
     from a single root path, making the codebase environment-agnostic.
-  - `setup_logging(log_dir)` — configures a dual file+stdout logger.
-  - `chunk_by_tokens(text)` — tiktoken-based sentence-boundary-aware text
+  - `setup_logging(log_dir)`: configures a dual file+stdout logger.
+  - `chunk_by_tokens(text)`: tiktoken-based sentence-boundary-aware text
     chunker used by the GPT rewrite pipeline.
-  - `safe_batch_decode(preds, tokenizer)` — robust conversion from logit or
+  - `safe_batch_decode(preds, tokenizer)`: robust conversion from logit or
     token-ID arrays to decoded strings, handling 1D/2D/3D inputs and
     vocabulary clamping.
   - General I/O helpers: `save_json`, `save_jsonl`, `load_jsonl`,
     `inspect_jsonl`.
 
 - **`src/data_processing.py`**
-  - `download_datasets(dataset_path)` — downloads ArXiv and PubMed JSONL
+  - `download_datasets(dataset_path)`: downloads ArXiv and PubMed JSONL
     splits from the Hugging Face Hub via `wget`.
-  - `load_custom_dataset(dataset_name, dataset_path)` — loads raw JSONL data
+  - `load_custom_dataset(dataset_name, dataset_path)`: loads raw JSONL data
     into a typed HuggingFace `DatasetDict` with a fixed feature schema.
-  - `tfidf_oracle(text_sentences, top_k)` — TF-IDF sentence scoring and
+  - `tfidf_oracle(text_sentences, top_k)`: TF-IDF sentence scoring and
     top-*k* selection for oracle extractive summary generation.
-  - `generate_tfidf_oracle_dataset(dataset_dict)` — in-memory oracle
+  - `generate_tfidf_oracle_dataset(dataset_dict)`: in-memory oracle
     annotation of all splits; returns an enriched `DatasetDict`.
-  - `generate_and_save_trimmed_split(...)` — production-scale enriched JSONL
+  - `generate_and_save_trimmed_split(...)`: production-scale enriched JSONL
     serialisation with configurable sample limits.
-  - `build_enriched_datasets(dataset_path)` — end-to-end orchestrator for
+  - `build_enriched_datasets(dataset_path)`: end-to-end orchestrator for
     both ArXiv and PubMed enriched dataset creation.
-  - `load_cleaned_enriched_split(jsonl_path)` — drops auxiliary schema fields
+  - `load_cleaned_enriched_split(jsonl_path)`: drops auxiliary schema fields
     that cause type conflicts before BERTScore evaluation.
-  - `bertscore_pairwise(oracle, gold)` — per-example BERTScore computation.
-  - `evaluate_bert_similarity(dataset_dict, split_name)` — batch BERTScore
+  - `bertscore_pairwise(oracle, gold)`: per-example BERTScore computation.
+  - `evaluate_bert_similarity(dataset_dict, split_name)`: batch BERTScore
     oracle-vs-gold evaluation.
-  - `run_bertscore_evaluation(dataset_path)` — full evaluation across all
+  - `run_bertscore_evaluation(dataset_path)`: full evaluation across all
     splits of both datasets.
 
 - **`src/models.py`**
-  - `call_openai_chat(messages, ...)` — OpenAI Chat Completions wrapper with
+  - `call_openai_chat(messages, ...)`: OpenAI Chat Completions wrapper with
     exponential back-off retries.
-  - `rewrite_with_self_critique(chunk)` — four-stage GPT rewrite pipeline
+  - `rewrite_with_self_critique(chunk)`: four-stage GPT rewrite pipeline
     (fact extraction → guided rewrite → self-critique → automated revision).
-  - `run_rewrite_pipeline(base_dir)` — iterates over all extractive summary
+  - `run_rewrite_pipeline(base_dir)`: iterates over all extractive summary
     files and applies `rewrite_with_self_critique` chunk by chunk.
-  - `LongformerWithCrossAttention` — custom `nn.Module` extending
+  - `LongformerWithCrossAttention`: custom `nn.Module` extending
     `allenai/longformer-base-4096` with a multi-head cross-attention layer
     and token-level binary classifier.
-  - `SavePretrainedCallback` — HuggingFace `TrainerCallback` that persists
+  - `SavePretrainedCallback`: HuggingFace `TrainerCallback` that persists
     the custom model's state dictionary at every checkpoint.
-  - `SummaryGenerator` — inference wrapper that scores tokens, aggregates
+  - `SummaryGenerator`: inference wrapper that scores tokens, aggregates
     per sentence, and selects top-*k* sentences.
-  - `LongformerExtractor` — end-to-end training/loading manager: handles
+  - `LongformerExtractor`: end-to-end training/loading manager: handles
     checkpoint resumption, label alignment, ROUGE compute\_metrics, and
     final model serialisation.
-  - `build_sentence_dataset(ds_dict)` — flattens document-level data into
+  - `build_sentence_dataset(ds_dict)`: flattens document-level data into
     sentence-level binary classification examples for DistilBERT.
-  - `get_distilbert_trainer(...)` — configures a HuggingFace Trainer with
+  - `get_distilbert_trainer(...)`: configures a HuggingFace Trainer with
     ROC-AUC evaluation for the DistilBERT sentence classifier.
-  - `train_distilbert_baselines(arxiv_ds, pubmed_ds, output_dir)` — trains
+  - `train_distilbert_baselines(arxiv_ds, pubmed_ds, output_dir)`: trains
     both ArXiv and PubMed DistilBERT classifiers.
-  - `load_and_split_extractive_preds(input_file)` — loads extractive
+  - `load_and_split_extractive_preds(input_file)`: loads extractive
     prediction JSONL files and creates train/val/test folds for T5.
-  - `preprocess_for_t5(datasets, tokenizer, ...)` — tokenises
+  - `preprocess_for_t5(datasets, tokenizer, ...)`: tokenises
     prediction/reference pairs for seq-to-seq training.
-  - `run_t5_abstractive_pipeline(...)` — full T5 fine-tuning and evaluation
+  - `run_t5_abstractive_pipeline(...)`: full T5 fine-tuning and evaluation
     loop with BERTScore and GPT FactCC output.
 
 - **`src/evaluation.py`**
-  - `evaluate_summaries(refs, gens)` — per-pair ROUGE-1/2/L scorer returning
+  - `evaluate_summaries(refs, gens)`: per-pair ROUGE-1/2/L scorer returning
     a pandas DataFrame.
-  - `evaluate_model(dataset_name, model_fn, ...)` — test-set evaluator for
+  - `evaluate_model(dataset_name, model_fn, ...)`: test-set evaluator for
     any callable extractive model; computes ROUGE against oracle summaries.
-  - `evaluate_extractive_distilbert(trainer, tokenizer, raw_ds, ...)` —
+  - `evaluate_extractive_distilbert(trainer, tokenizer, raw_ds, ...)`: 
     DistilBERT inference with top-*k* sentence selection and ROUGE scoring.
-  - `compute_bertscore(refs, hyps)` — corpus-level BERTScore (P/R/F1).
-  - `compute_factcc_via_gpt(refs, hyps)` — GPT-based FactCC probe with
+  - `compute_bertscore(refs, hyps)`: corpus-level BERTScore (P/R/F1).
+  - `compute_factcc_via_gpt(refs, hyps)`: GPT-based FactCC probe with
     SUPPORTS/NOT\_SUPPORTS labels and continuous confidence scores.
-  - `load_reference_summaries(path)` — reads ground-truth JSONL summaries.
-  - `load_generated_summaries(dirpath)` — reads numbered `.txt` summary
+  - `load_reference_summaries(path)`: reads ground-truth JSONL summaries.
+  - `load_generated_summaries(dirpath)`: reads numbered `.txt` summary
     files produced by the rewrite pipeline.
-  - `load_and_preprocess_test_dataset(dataset_name, drive_path)` — loads and
+  - `load_and_preprocess_test_dataset(dataset_name, drive_path)`: loads and
     normalises the raw test JSONL with a dynamically inferred schema.
-  - `evaluate_all(base_dir, datasets)` — master evaluation entry point:
+  - `evaluate_all(base_dir, datasets)`: master evaluation entry point:
     aligns indices, runs BERTScore + FactCC, saves JSON results.
 
 ---
