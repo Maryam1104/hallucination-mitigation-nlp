@@ -40,7 +40,7 @@ coverage.
 The proposed framework consists of a two-stage summarization pipeline. A custom Longformer-based extractive model first identifies salient evidence sentences from long scientific documents. These extracted summaries are subsequently refined by a GPT-based self-critique rewriting pipeline to improve fluency while preserving factual consistency. DistilBERT and T5 are implemented as baseline models for comparative evaluation.
 
 <p align="center">
-  <img src="images/architecture_approach.png" width="280">
+  <img src="images/architecture_approach.png" width="400">
 </p>
 
 <p align="center">
