@@ -26,7 +26,6 @@ similarity and a GPT-based FactCC probe (SUPPORTS / NOT\_SUPPORTS with a
 continuous confidence score), supplemented by standard ROUGE-1/2/L metrics for
 coverage.
 
----
 ## Project Highlights
 
 - Novel hybrid extractive–abstractive summarization framework
@@ -36,6 +35,49 @@ coverage.
 - Evaluated on ArXiv and PubMed scientific summarization benchmarks
 - Automated evaluation using ROUGE, BERTScore, and GPT-based FactCC
 
+## Overall System Architecture
+
+The proposed framework consists of a two-stage summarization pipeline. A custom Longformer-based extractive model first identifies salient evidence sentences from long scientific documents. These extracted summaries are subsequently refined by a GPT-based self-critique rewriting pipeline to improve fluency while preserving factual consistency. DistilBERT and T5 are implemented as baseline models for comparative evaluation.
+
+<p align="center">
+  <img src="images/architecture_approach.png" width="420">
+</p>
+
+**Figure 1.** Overall architecture of the proposed hallucination mitigation framework.
+
+## Methodology
+
+The proposed approach consists of four main stages:
+
+1. Dataset preparation
+2. Extractive summarization
+3. Abstractive refinement
+4. Factual consistency evaluation
+
+## GPT Self-Critique Abstractive Refinement
+
+To reduce hallucinations introduced during abstractive summarization, the extractive summaries are processed through a four-stage prompt engineering pipeline.
+
+<p align="center">
+  <img src="images/abstractive-pipeline.png" width="900">
+</p>
+
+**Figure 2.** Four-stage GPT self-critique rewriting framework consisting of fact extraction, guided rewriting, self-critique, and automatic revision.
+
+The rewriting framework operates as follows:
+
+1. **Fact Extraction**
+   - Extract atomic subject–predicate–object triples from each extractive chunk.
+
+2. **Guided Rewrite**
+   - Generate fluent academic prose using only the extracted facts.
+
+3. **Self-Critique**
+   - Review the generated text for unsupported, ambiguous, or hallucinated statements.
+
+4. **Automatic Revision**
+   - Resolve flagged issues using only the original extracted facts. Missing information is explicitly marked as unspecified rather than hallucinated.
+     
 ---
 
 ## Repository Structure
