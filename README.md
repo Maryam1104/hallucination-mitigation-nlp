@@ -86,15 +86,18 @@ The rewriting framework operates as follows:
 
 ```
 hallucination_mitigation_nlp/
-├── main.py                  ← Single entry point; orchestrates all stages
-├── requirements.txt         ← All Python dependencies (pip-installable)
-├── README.md
+├── main.py                  ← Single entry point; orchestrates the complete pipeline
+├── requirements.txt         ← Python dependencies
+├── README.md                ← Project documentation
+├── images/                  ← Architecture and workflow figures used in the README
+│   ├── architecture_approach.png
+│   └── abstractive_pipeline.png
 └── src/
     ├── __init__.py
-    ├── utils.py             ← Configuration, logging, path helpers, I/O utilities
-    ├── data_processing.py   ← Dataset downloading, TF-IDF oracle extraction, BERTScore eval
-    ├── models.py            ← Longformer, DistilBERT, T5 model definitions and training
-    └── evaluation.py        ← ROUGE, BERTScore, GPT FactCC evaluation frameworks
+    ├── utils.py             ← Configuration, logging, path helpers, and I/O utilities
+    ├── data_processing.py   ← Dataset downloading, preprocessing, TF-IDF oracle generation, and BERTScore evaluation
+    ├── models.py            ← Longformer, DistilBERT, T5, GPT self-critique pipeline, and training workflows
+    └── evaluation.py        ← ROUGE, BERTScore, FactCC evaluation frameworks
 ```
 
 ### `src/` Module Responsibilities
