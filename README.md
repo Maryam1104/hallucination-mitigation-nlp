@@ -46,39 +46,6 @@ The proposed framework consists of a two-stage summarization pipeline. A custom 
 <p align="center">
   <em>Figure 1. Overall architecture of the proposed framework.</em>
 </p>
-
-## Methodology
-
-The proposed approach consists of four main stages:
-
-1. Dataset preparation
-2. Extractive summarization
-3. Abstractive refinement
-4. Factual consistency evaluation
-
-## GPT Self-Critique Abstractive Refinement
-
-To reduce hallucinations introduced during abstractive summarization, the extractive summaries are processed through a four-stage prompt engineering pipeline.
-
-<p align="center">
-  <img src="images/abstractive-pipeline.png" width="900">
-</p>
-
-**Figure 2.** Four-stage GPT self-critique rewriting framework consisting of fact extraction, guided rewriting, self-critique, and automatic revision.
-
-The rewriting framework operates as follows:
-
-1. **Fact Extraction**
-   - Extract atomic subject–predicate–object triples from each extractive chunk.
-
-2. **Guided Rewrite**
-   - Generate fluent academic prose using only the extracted facts.
-
-3. **Self-Critique**
-   - Review the generated text for unsupported, ambiguous, or hallucinated statements.
-
-4. **Automatic Revision**
-   - Resolve flagged issues using only the original extracted facts. Missing information is explicitly marked as unspecified rather than hallucinated.
      
 ---
 
