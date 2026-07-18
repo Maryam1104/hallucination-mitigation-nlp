@@ -27,6 +27,16 @@ continuous confidence score), supplemented by standard ROUGE-1/2/L metrics for
 coverage.
 
 ---
+## Project Highlights
+
+- Novel hybrid extractive–abstractive summarization framework
+- Custom Longformer with Cross-Attention sentence extraction
+- GPT-4o-mini self-critique rewriting pipeline for hallucination mitigation
+- DistilBERT and T5 baselines for comparison
+- Evaluated on ArXiv and PubMed scientific summarization benchmarks
+- Automated evaluation using ROUGE, BERTScore, and GPT-based FactCC
+
+---
 
 ## Repository Structure
 
